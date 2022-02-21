@@ -1,10 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import plus from './assets/plus-icon.png';
+import minus from './assets/minus-icon.png';
+import multiply from './assets/multiply-icon.png';
+import divide from './assets/divide-icon.png';
+import equals from './assets/equals-icon.png'
 
 export default function App() {
   const numbers = [{ row: [7, 8, 9] }, { row: [4, 5, 6] }, { row: [1, 2, 3] }];
   const operators = ['x', '-', '+'];
+  const operatorPNG = [multiply, minus, plus, divide]
   const [primaryNum, setPrimaryNum] = useState('0');
   const [secondaryNum, setSecondaryNum] = useState('0');
   const [operator, setOperator] = useState(null);
@@ -30,28 +36,28 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <Text style={styles.field}>{!operator ? primaryNum : secondaryNum}</Text>
       <View style={styles.pressableContainer}>
         <View style={styles.rowContainer}>
           <Pressable onPress={() => (setPrimaryNum('0'), setSecondaryNum("0"), setOperator(null))} style={styles.topRowButton}><Text style={styles.blackInput}>AC</Text></Pressable>
           <Pressable style={styles.topRowButton}><Text style={styles.blackInput}>+/-</Text></Pressable>
           <Pressable style={styles.topRowButton}><Text style={styles.blackInput}>%</Text></Pressable>
-          <Pressable onPress={() => { operator ? (calculate(), setOperator(null)) : setOperator('/') }} style={styles.operator}><Text style={styles.whiteInput}>/</Text></Pressable>
+          <Pressable onPress={() => { operator ? (calculate(), setOperator(null)) : setOperator('/') }} style={styles.operator}><Image source={divide} style={styles.icon} /></Pressable>
         </View>
         {numbers.map((number, index) =>
           <View style={styles.rowContainer} key={index} >
-            {number.row.map((value) =>
-              <Pressable onPress={() => operator ? setSecondaryNum(secondaryNum + value) : setPrimaryNum(primaryNum + value)} style={styles.pressable}>
+            {number.row.map((value, d) =>
+              <Pressable key={d} onPress={() => operator ? setSecondaryNum(secondaryNum + value) : setPrimaryNum(primaryNum + value)} style={styles.pressable}>
                 <Text style={styles.whiteInput}>{value.toString()}</Text>
               </Pressable>
             )}
             <Pressable
               onPress={() => { operator ? (calculate(), setOperator(null)) : setOperator(operators[index]) }}
-              style={operator == operators[index] ? styles.pickedOperator : styles.operator}
+              style={styles.operator}
             >
               <Text style={operator == operators[index] ? styles.pickedInput : styles.whiteInput}>
-                {operators[index]}
+                <Image source={operatorPNG[index]} style={styles.icon} />
               </Text>
             </Pressable>
           </View>
@@ -59,7 +65,7 @@ export default function App() {
         <View style={styles.rowContainer}>
           <Pressable style={styles.pressableZero}><Text style={styles.whiteInput}>0</Text></Pressable>
           <Pressable style={styles.pressable}><Text style={styles.whiteInput}>.</Text></Pressable>
-          <Pressable style={styles.operator}><Text style={styles.whiteInput}>=</Text></Pressable>
+          <Pressable style={styles.operator}><Image source={equals} style={styles.icon} /></Pressable>
         </View>
       </View>
     </View>
@@ -71,12 +77,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 70
   },
   field: {
     color: '#fff',
-    fontSize: 50,
+    fontSize: 90,
     display: 'flex',
+    marginLeft: 'auto',
+    fontWeight: '200',
+    paddingRight: 32
   },
   pressableContainer: {
     display: 'flex',
@@ -149,5 +159,10 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 35,
     fontWeight: '500'
+  },
+  icon: {
+    height: 25,
+    width: 40
   }
+
 });
