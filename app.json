@@ -13,17 +13,26 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.deepnothing.reactnativetest"
+      "bundleIdentifier": "com.deepnothing.reactnativetest",
+      "buildNumber": "2.2.1",
+      "infoPlist": {
+        "GADIsAdManagerApp": true
+      },
+      "config": {
+        "googleMobileAdsAppId": "your-admob-app-id"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [],
+      "config": {
+        "googleMobileAdsAppId": " your-admob-android-app-id"
       }
     },
     "web": {
